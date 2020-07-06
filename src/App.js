@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import Notification from './components/Notification';
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -47,8 +48,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
+    } catch (error) {
+      setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -70,24 +71,22 @@ const App = () => {
     const newObject = {
       title: inputs.title,
       author: inputs.author,
-      url: inputs.url,
-      user: user.id
+      url: inputs.url
     }
-    try {
-      blogService.create(newObject)
+    blogService.create(newObject)
       .then(returnedBlog => {
-        setMessage(`Added blog entry:
-        Title: ${returnedBlog.title}   
-        Author: ${returnedBlog.author}   
-        Url: ${returnedBlog.url}`)   
+        setMessage(`A new blog: '${returnedBlog.title}'  by  '${returnedBlog.author}'  added`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
         setInputs({})
       })
-    } catch (exception) {
-      setErrorMessage('Problem with post')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
+      .catch(error => {
+        setErrorMessage(`Please provide all the fields`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   const loginForm = () => (
@@ -121,7 +120,7 @@ const App = () => {
 
   const allBlogs = () => (
     <div>
-      {`${user.name} logged in`}
+      {`'${user.name}' logged in`}
       <br></br>
       <button onClick={() => logout()}>Logout</button>
       <br></br>
@@ -129,15 +128,15 @@ const App = () => {
       Create new blog entry
       <br></br>
       Title
-        <input value={inputs.title} name="title" onChange={handleChange}/>
-        <br></br>
+      <input value={inputs.title} name="title" onChange={handleChange} />
+      <br></br>
       Author
-        <input value={inputs.author} name="author" onChange={handleChange} />
-        <br></br>
+      <input value={inputs.author} name="author" onChange={handleChange} />
+      <br></br>
       Url
-        <input value={inputs.url} name="url" onChange={handleChange} />
-        <br></br>
-        <button onClick={(event) => handlePost(event)}>Create</button>
+      <input value={inputs.url} name="url" onChange={handleChange} />
+      <br></br>
+      <button onClick={(event) => handlePost(event)}>Create</button>
       <br></br>
       <h2>Blogs</h2>
       {blogs && blogs.map(blog =>
@@ -154,7 +153,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={errorMessage || message} />
+      <Notification notification={message} errorMessage={errorMessage} />
       {user === null ? loginForm() : !loading ? allBlogs() : pageLoading()}
     </div>
   )
