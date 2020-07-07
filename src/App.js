@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogEntry from './components/BlogEntry'
+import Togglable from './components/Togglable';
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
@@ -14,8 +15,8 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
-  const [inputs, setInputs] = useState({title: '', author: '', url: ''})
-  const [showBlogEntry, setShowBlogEntry] = useState(false)
+
+  const blogEntryRef = useRef()
 
   useEffect(() => {
     setLoading(true)
@@ -63,25 +64,14 @@ const App = () => {
     setUser(null)
   }
 
-  const handleChange = (event) => {
-    event.persist();
-    setInputs(inputs => ({ ...inputs, [event.target.name]: event.target.value }));
-  }
-
-  const handlePost = (event) => {
-    event.preventDefault()
-    const newObject = {
-      title: inputs.title,
-      author: inputs.author,
-      url: inputs.url
-    }
+  const handlePost = (newObject) => {
+    blogEntryRef.current.toggleVisibility()
     blogService.create(newObject)
       .then(returnedBlog => {
         setMessage(`A new blog: '${returnedBlog.title}'  by  '${returnedBlog.author}'  added`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-        setInputs({title: '', author: '', url: ''})
       })
       .catch(error => {
         setErrorMessage(`Please provide all the fields correctly`)
@@ -127,9 +117,9 @@ const App = () => {
       <button onClick={() => logout()}>Logout</button>
       <br></br>
       <br></br>
-      <button onClick={() => setShowBlogEntry(true)}>Add blog entry</button>
-      {showBlogEntry &&
-      <BlogEntry inputs={inputs} handleChange={handleChange} handlePost={handlePost} setShowBlogEntry={setShowBlogEntry} />}
+      <Togglable buttonLabel="Add new blog" ref={blogEntryRef}>
+      <BlogEntry handlePost={handlePost} />
+      </Togglable>
       <br></br>
       <h2>Blogs</h2>
       {blogs && blogs.map(blog =>

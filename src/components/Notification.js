@@ -2,7 +2,6 @@ import React from 'react'
 import './Notification.css'
 
 const Notification = ({ notification, errorMessage}) => {
-    console.log('message', notification, 'errorMessage', errorMessage)
     if (notification === null && errorMessage === null) {
         return null
     }
