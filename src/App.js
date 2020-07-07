@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import Notification from './components/Notification';
+import Notification from './components/Notification'
+import BlogEntry from './components/BlogEntry'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
@@ -13,7 +14,8 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
-  const [inputs, setInputs] = useState({})
+  const [inputs, setInputs] = useState({title: '', author: '', url: ''})
+  const [showBlogEntry, setShowBlogEntry] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -79,10 +81,10 @@ const App = () => {
         setTimeout(() => {
           setMessage(null)
         }, 5000)
-        setInputs({})
+        setInputs({title: '', author: '', url: ''})
       })
       .catch(error => {
-        setErrorMessage(`Please provide all the fields`)
+        setErrorMessage(`Please provide all the fields correctly`)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -125,18 +127,9 @@ const App = () => {
       <button onClick={() => logout()}>Logout</button>
       <br></br>
       <br></br>
-      Create new blog entry
-      <br></br>
-      Title
-      <input value={inputs.title} name="title" onChange={handleChange} />
-      <br></br>
-      Author
-      <input value={inputs.author} name="author" onChange={handleChange} />
-      <br></br>
-      Url
-      <input value={inputs.url} name="url" onChange={handleChange} />
-      <br></br>
-      <button onClick={(event) => handlePost(event)}>Create</button>
+      <button onClick={() => setShowBlogEntry(true)}>Add blog entry</button>
+      {showBlogEntry &&
+      <BlogEntry inputs={inputs} handleChange={handleChange} handlePost={handlePost} setShowBlogEntry={setShowBlogEntry} />}
       <br></br>
       <h2>Blogs</h2>
       {blogs && blogs.map(blog =>

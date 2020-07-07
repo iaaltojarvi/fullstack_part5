@@ -1,18 +1,14 @@
 .error {
-    color: red;
-    background: white;
+    color: white;
+    background: red;
     font-size: 20px;
-    border: 1px solid black;
-    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
 }
 .notification {
-    color: darkolivegreen;
-    background: rgb(159, 233, 238);
+    color: white;
+    background: green;
     font-size: 20px;
-    border: 1px solid darkolivegreen ;
-    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
 }
