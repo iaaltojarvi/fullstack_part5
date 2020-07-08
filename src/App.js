@@ -50,6 +50,28 @@ const App = () => {
     }
   }, [newBlog])
 
+  const addOneLike = (blog) => {
+    console.log(blog)
+    const likes = blog.likes + 1
+    const newObject = { ...blog, likes }
+    blogService
+      .update(blog.id, newObject)
+      .then(returnedBlog => {
+        console.log(returnedBlog)
+        setMessage('You liked this blog')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+      .catch(error => {
+        console.log(`Error in updating likes: ${error.message}`)
+        setErrorMessage('Could not like, try again later')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
+  }
+
   const remove = (id) => {
     if (window.confirm('Do you really want to delete the blog?')) {
       blogService
@@ -160,7 +182,7 @@ const App = () => {
       <br></br>
       <h2>Blogs</h2>
       {blogs && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} remove={remove} user={user} />
+        <Blog key={blog.id} blog={blog} remove={remove} user={user} addOneLike={addOneLike} />
       )}
     </div>
   )

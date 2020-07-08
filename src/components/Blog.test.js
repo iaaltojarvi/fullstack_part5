@@ -44,3 +44,26 @@ test('shows url and likes when show more button is clicked', () => {
   expect(component.container).toHaveTextContent('100')
 })
 
+test('handleLike function is called twice, when like button is clicked twice', () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Me myself and I',
+    url: 'testing.com',
+    likes: 100
+  }
+
+  const mockHandler = jest.fn()
+  const mockHandlerTwo = jest.fn()
+
+  const component = render(
+    <Blog blog={blog} showMore={mockHandler} addOneLike={mockHandlerTwo} />
+  )
+  const button = component.getByText('Show more')
+  fireEvent.click(button)
+  const buttonTwo = component.getByText('Like')
+  fireEvent.click(buttonTwo)
+  fireEvent.click(buttonTwo)
+
+  expect(mockHandlerTwo.mock.calls).toHaveLength(2)
+})
+
