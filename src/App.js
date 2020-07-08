@@ -51,6 +51,26 @@ const App = () => {
     }
   }, [newBlog])
 
+  const remove = (id) => {
+    console.log('clikked remove')
+    blogService
+    .remove(id)
+    .then(returnedBlog => {
+      setMessage('You removed the blog')
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    })
+    .catch(error => {
+      console.log(`Error in remove: ${error.message}`)
+      setErrorMessage('You have to be an author of the blog to be able to remove it')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    })
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -138,7 +158,7 @@ const App = () => {
       <br></br>
       <h2>Blogs</h2>
       {blogs && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} remove={remove} />
       )}
     </div>
   )

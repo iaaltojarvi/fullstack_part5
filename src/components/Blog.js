@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import Notification from './Notification';
 import './Blog.css'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, remove }) => {
   const [showBlogMore, setShowBlogMore] = useState(false)
   const [oneBlog, setOneBlog] = useState({ title: '', author: '', url: '', likes: '' })
   const [message, setMessage] = useState(null)
@@ -35,6 +35,11 @@ const Blog = ({ blog }) => {
       })
   }
 
+  const handleRemove = (id) => {
+    id = blog.id
+    remove(id)
+  }
+
   return (
     <div className="blog">
       {blog.title}
@@ -49,6 +54,8 @@ const Blog = ({ blog }) => {
           {`Url: ${blog.url}`}
           <br></br>
           <button onClick={() => showMore()}>Hide</button>
+          <br></br>
+          <button onClick={(id) => handleRemove(id)}>Remove</button>
           {message !== null &&
             <Notification notification={message} errorMessage={errorMessage} />
           }
