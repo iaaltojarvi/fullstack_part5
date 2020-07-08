@@ -15,6 +15,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
+  const [newBlog, setNewBlog] = useState(false)
 
   const blogEntryRef = useRef()
 
@@ -37,6 +38,15 @@ const App = () => {
         setLoading(false)
       })
   }, [])
+
+  useEffect(() => {
+    if (newBlog) {
+      blogService.getAll()
+        .then(blogs => {
+          setBlogs(blogs)
+        })
+    }
+  }, [newBlog])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -68,10 +78,12 @@ const App = () => {
     blogEntryRef.current.toggleVisibility()
     blogService.create(newObject)
       .then(returnedBlog => {
+        setNewBlog(true)
         setMessage(`A new blog: '${returnedBlog.title}'  by  '${returnedBlog.author}'  added`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
+        setNewBlog(false)
       })
       .catch(error => {
         setErrorMessage(`Please provide all the fields correctly`)
@@ -118,7 +130,7 @@ const App = () => {
       <br></br>
       <br></br>
       <Togglable buttonLabel="Add new blog" ref={blogEntryRef}>
-      <BlogEntry handlePost={handlePost} />
+        <BlogEntry handlePost={handlePost} />
       </Togglable>
       <br></br>
       <h2>Blogs</h2>
