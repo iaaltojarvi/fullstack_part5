@@ -43,12 +43,10 @@ const Blog = ({ blog, remove, user }) => {
 
   return (
     <div className="blog">
-      {blog.title}
+      {`'${blog.title}' by '${blog.author}'`}
       <br></br>
       {showBlogMore ? (
         <div>
-          {`Author: '${blog.author}'`}
-          <br></br>
           {`Likes: ${oneBlog.likes !== '' ? oneBlog.likes : blog.likes}`}
           <button onClick={(event) => handleLike(event)}>Like</button>
           <br></br>
