@@ -34,7 +34,10 @@ const App = () => {
     setLoading(true)
     blogService.getAll()
       .then(blogs => {
-        setBlogs(blogs)
+        const sorted = blogs.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+        setBlogs(sorted)
         setLoading(false)
       })
   }, [])
@@ -121,7 +124,7 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
-
+  
   const allBlogs = () => (
     <div>
       {`'${user.name}' logged in`}
