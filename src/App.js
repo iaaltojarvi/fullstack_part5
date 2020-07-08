@@ -52,23 +52,24 @@ const App = () => {
   }, [newBlog])
 
   const remove = (id) => {
-    console.log('clikked remove')
-    blogService
-    .remove(id)
-    .then(returnedBlog => {
-      setMessage('You removed the blog')
-      setBlogs(blogs.filter(blog => blog.id !== id))
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
-    })
-    .catch(error => {
-      console.log(`Error in remove: ${error.message}`)
-      setErrorMessage('Could not remove, try again later')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    })
+    if (window.confirm("Do you really want to delete the blog?")) {
+      blogService
+        .remove(id)
+        .then(returnedBlog => {
+          setMessage('You removed the blog')
+          setBlogs(blogs.filter(blog => blog.id !== id))
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          console.log(`Error in remove: ${error.message}`)
+          setErrorMessage('Could not remove, try again later')
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+    }
   }
 
   const handleLogin = async (event) => {
@@ -144,7 +145,7 @@ const App = () => {
       <button type="submit">login</button>
     </form>
   )
-  
+
   const allBlogs = () => (
     <div>
       {`'${user.name}' logged in`}
