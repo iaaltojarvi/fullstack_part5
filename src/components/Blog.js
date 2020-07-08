@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
-import Notification from './Notification';
+import Notification from './Notification'
 import './Blog.css'
 
 const Blog = ({ blog, remove, user }) => {
@@ -20,6 +20,7 @@ const Blog = ({ blog, remove, user }) => {
     blogService
       .update(blog.id, newObject)
       .then(returnedBlog => {
+        console.log(returnedBlog)
         setMessage('You liked this blog')
         setTimeout(() => {
           setMessage(null)
@@ -45,7 +46,7 @@ const Blog = ({ blog, remove, user }) => {
       {blog.title}
       <br></br>
       {showBlogMore ? (
-        <>
+        <div>
           {`Author: '${blog.author}'`}
           <br></br>
           {`Likes: ${oneBlog.likes !== '' ? oneBlog.likes : blog.likes}`}
@@ -61,13 +62,76 @@ const Blog = ({ blog, remove, user }) => {
           {message !== null &&
             <Notification notification={message} errorMessage={errorMessage} />
           }
-        </>
+        </div>
       ) : (
-          <button onClick={() => showMore()}>Show more</button>
-        )
+        <button onClick={() => showMore()}>Show more</button>
+      )
       }
     </div>
   )
 }
 
 export default Blog
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

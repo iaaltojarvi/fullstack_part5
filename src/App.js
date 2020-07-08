@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogEntry from './components/BlogEntry'
-import Togglable from './components/Togglable';
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
@@ -35,8 +35,8 @@ const App = () => {
     blogService.getAll()
       .then(blogs => {
         const sorted = blogs.sort(function (a, b) {
-          return b.likes - a.likes;
-        });
+          return b.likes - a.likes
+        })
         setBlogs(sorted)
         setLoading(false)
       })
@@ -52,10 +52,11 @@ const App = () => {
   }, [newBlog])
 
   const remove = (id) => {
-    if (window.confirm("Do you really want to delete the blog?")) {
+    if (window.confirm('Do you really want to delete the blog?')) {
       blogService
         .remove(id)
         .then(returnedBlog => {
+          console.log(returnedBlog)
           setMessage('You removed the blog')
           setBlogs(blogs.filter(blog => blog.id !== id))
           setTimeout(() => {
@@ -110,7 +111,8 @@ const App = () => {
         setNewBlog(false)
       })
       .catch(error => {
-        setErrorMessage(`Please provide all the fields correctly`)
+        console.log(`Error in post: ${error.message}`)
+        setErrorMessage('Please provide all the fields correctly')
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
