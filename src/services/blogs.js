@@ -21,8 +21,8 @@ const create = async newObject => {
 }
 
 const update = async (id, newObject) => {
-  const req = await axios.put(`${baseUrl}/${id}`, newObject)
-  return req.then(res => res.data)
+  const res = await axios.put(`${baseUrl}/${id}`, newObject)
+  return res.data
 }
 
 export default { setToken, getAll, create, update }
