@@ -3,7 +3,6 @@ import './Blog.css'
 
 const Blog = ({ blog, remove, user, addOneLike }) => {
   const [showBlogMore, setShowBlogMore] = useState(false)
-  const [oneBlog, setOneBlog] = useState({ title: '', author: '', url: '', likes: '' })
 
   const showMore = () => {
     setShowBlogMore(!showBlogMore)
@@ -11,11 +10,9 @@ const Blog = ({ blog, remove, user, addOneLike }) => {
 
   const handleLike = async (event) => {
     event.preventDefault()
-    console.log(blog)
-    const likes = blog.likes + 1
-    setOneBlog(blog)
-    oneBlog.likes = likes
+    blog.likes += 1
     addOneLike(blog)
+    console.log('in blog', blog.likes)
   }
 
   const handleRemove = (id) => {
@@ -29,7 +26,7 @@ const Blog = ({ blog, remove, user, addOneLike }) => {
       <br></br>
       {showBlogMore ? (
         <div>
-          {`Likes: ${oneBlog.likes !== '' ? oneBlog.likes : blog.likes}`}
+          {`Likes: ${blog.likes}`}
           <button onClick={(event) => handleLike(event)}>Like</button>
           <br></br>
           {`Url: ${blog.url}`}

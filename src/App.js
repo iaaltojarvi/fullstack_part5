@@ -15,6 +15,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
   const [newBlog, setNewBlog] = useState(false)
+  const [liked, setLiked] = useState(false)
 
   const blogEntryRef = useRef()
 
@@ -42,23 +43,24 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (newBlog) {
+    if (newBlog || liked) {
       blogService.getAll()
         .then(blogs => {
-          setBlogs(blogs)
+          const sorted = blogs.sort(function (a, b) {
+            return b.likes - a.likes
+          })
+          setBlogs(sorted)
         })
     }
-  }, [newBlog])
+    setLiked(false)
+  }, [newBlog, liked])
 
-  const addOneLike = (blog) => {
-    console.log(blog)
-    const likes = blog.likes + 1
-    const newObject = { ...blog, likes }
-    blogService
-      .update(blog.id, newObject)
+  const addOneLike = async (blog) => {
+    setLiked(true)
+    await blogService
+      .update(blog.id, blog)
       .then(returnedBlog => {
-        console.log(returnedBlog)
-        setMessage('You liked this blog')
+        setMessage(`You liked '${returnedBlog.title}'`)
         setTimeout(() => {
           setMessage(null)
         }, 5000)
