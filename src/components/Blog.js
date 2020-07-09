@@ -12,7 +12,6 @@ const Blog = ({ blog, remove, user, addOneLike }) => {
     event.preventDefault()
     blog.likes += 1
     addOneLike(blog)
-    console.log('in blog', blog.likes)
   }
 
   const handleRemove = (id) => {

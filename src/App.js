@@ -55,9 +55,9 @@ const App = () => {
     setLiked(false)
   }, [newBlog, liked])
 
-  const addOneLike = async (blog) => {
+  const addOneLike = (blog) => {
     setLiked(true)
-    await blogService
+    blogService
       .update(blog.id, blog)
       .then(returnedBlog => {
         setMessage(`You liked '${returnedBlog.title}'`)
@@ -79,8 +79,7 @@ const App = () => {
       blogService
         .remove(id)
         .then(returnedBlog => {
-          console.log(returnedBlog)
-          setMessage('You removed the blog')
+          setMessage('You removed the blog', returnedBlog)
           setBlogs(blogs.filter(blog => blog.id !== id))
           setTimeout(() => {
             setMessage(null)

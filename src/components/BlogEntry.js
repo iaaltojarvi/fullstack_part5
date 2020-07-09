@@ -20,21 +20,21 @@ const BlogEntry = ({ handlePost }) => {
   }
 
   return (
-    <>
+    <form onSubmit={(event) => addBlog(event)}>
       Create new blog entry
       <br></br>
       Title
-      <input value={inputs.title} name="title" onChange={handleChange} />
+      <input id="title" value={inputs.title} name="title" type="text" onChange={handleChange} />
       <br></br>
       Author
-      <input value={inputs.author} name="author" onChange={handleChange} />
+      <input id="author" value={inputs.author} name="author" type="text" onChange={handleChange} />
       <br></br>
       Url
-      <input value={inputs.url} name="url" onChange={handleChange} />
+      <input id="url" value={inputs.url} name="url" type="text" onChange={handleChange} />
       <br></br>
       <br></br>
-      <button onClick={(event) => addBlog(event)}>Create</button>
-    </>
+      <button type="submit">Create</button>
+    </form>
   )
 }
 
