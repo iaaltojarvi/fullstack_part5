@@ -11,7 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
   const [newBlog, setNewBlog] = useState(false)
@@ -20,25 +19,21 @@ const App = () => {
   const blogEntryRef = useRef()
 
   useEffect(() => {
-    setLoading(true)
     const loggedUser = window.localStorage.getItem('loggedUser')
     if (loggedUser) {
       const user = JSON.parse(loggedUser)
       setUser(user)
       blogService.setToken(user.token)
-      setLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    setLoading(true)
     blogService.getAll()
       .then(blogs => {
         const sorted = blogs.sort(function (a, b) {
           return b.likes - a.likes
         })
         setBlogs(sorted)
-        setLoading(false)
       })
   }, [])
 
@@ -149,6 +144,7 @@ const App = () => {
         Username
         <br></br>
         <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -159,6 +155,7 @@ const App = () => {
         Password
         <br></br>
         <input
+          id="password"
           type="password"
           value={password}
           name="Password"
@@ -166,7 +163,7 @@ const App = () => {
         />
       </div>
       <br></br>
-      <button type="submit">login</button>
+      <button id="login-button" type="submit">login</button>
     </form>
   )
 
@@ -188,16 +185,10 @@ const App = () => {
     </div>
   )
 
-  const pageLoading = () => (
-    <div>
-      Login in and fetching blog entries
-    </div>
-  )
-
   return (
     <div>
       <Notification notification={message} errorMessage={errorMessage} />
-      {user === null ? loginForm() : !loading ? allBlogs() : pageLoading()}
+      {user === null ? loginForm() : allBlogs()}
     </div>
   )
 }

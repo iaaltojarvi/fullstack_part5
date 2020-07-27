@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
 const BlogEntry = ({ handlePost }) => {
-  // const [inputs, setInputs] = useState({ title: '', author: '', url: '' })
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -45,7 +44,7 @@ const BlogEntry = ({ handlePost }) => {
       <input id="url" value={url} name="url" type="text" onChange={handleUrlChange} />
       <br></br>
       <br></br>
-      <button type="submit">Create</button>
+      <button id="blog-button" type="submit">Create</button>
     </form>
   )
 }

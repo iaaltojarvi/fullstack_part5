@@ -26,18 +26,18 @@ const Blog = ({ blog, remove, user, addOneLike }) => {
       {showBlogMore ? (
         <div>
           {`Likes: ${blog.likes}`}
-          <button onClick={(event) => handleLike(event)}>Like</button>
+          <button id="like-button" onClick={(event) => handleLike(event)}>Like</button>
           <br></br>
           {`Url: ${blog.url}`}
           <br></br>
           <button onClick={() => showMore()}>Hide</button>
           <br></br>
           {blog.user && user && user.username === blog.user.username &&
-            <button onClick={(id) => handleRemove(id)}>Remove</button>
+            <button id="remove-button" onClick={(id) => handleRemove(id)}>Remove</button>
           }
         </div>
       ) : (
-        <button onClick={() => showMore()}>Show more</button>
+        <button id="showMore-button" onClick={() => showMore()}>Show more</button>
       )
       }
     </div>
