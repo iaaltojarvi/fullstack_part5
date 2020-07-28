@@ -31,7 +31,7 @@ Cypress.Commands.add('login', ({ username, password }) => {
     username: 'iaaltojarvi',
     password: 'salainen'
   }
-  cy.request('POST', 'http://localhost:3003/api/users/', user)
+  cy.request('POST', 'http://localhost:3003/api/users', user)
   cy.request('POST', 'http://localhost:3003/api/login', {
     username, password
   }).then(({ body }) => {
@@ -52,4 +52,5 @@ Cypress.Commands.add('createBlog', ({ title, author, url }) => {
       'Authorization': `bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
     }
   })
+  cy.visit('http://localhost:3000')
 })

@@ -1,15 +1,5 @@
 /* eslint-disable no-undef */
 describe('Blog ', function () {
-  // beforeEach(function () {
-  //   cy.request('POST', 'http://localhost:3003/api/testing/reset')
-  //   const user = {
-  //     name: 'Inari Aaltojärvi',
-  //     username: 'iaaltojarvi',
-  //     password: 'salainen'
-  //   }
-  //   cy.request('POST', 'http://localhost:3003/api/users/', user)
-  // cy.visit('http://localhost:3000')
-
   describe('Login', function () {
     it('Login fails with wrong credentials', function () {
       cy.visit('http://localhost:3000')
@@ -30,7 +20,6 @@ describe('Blog ', function () {
     })
   })
 })
-// })
 
 describe('When logged in', function () {
   beforeEach(function () {
@@ -38,40 +27,25 @@ describe('When logged in', function () {
   })
   describe('New blog', function () {
     it('a new blog can be created', function () {
-      cy.contains('Add new blog').click()
-      cy.get('#title').type('Note created by cypress')
-      cy.get('#author').type('Minä')
-      cy.get('#url').type('testingWithCypress.com')
-      cy.contains('Create').click()
+      cy.createBlog({ title: 'Note created by cypress', author: 'Minä', url: 'testingWithCypress.com' })
       cy.contains('Note created by cypress')
     })
   })
 
   describe('Blog liked', function () {
     it('blog can be liked', function () {
-      // cy.get('#title').type('Another Note created by cypress')
-      // cy.get('#author').type('Another tester')
-      // cy.get('#url').type('testingWithCypress.com')
-      // cy.get('#blog-button').click()
-      cy.contains('Add new blog').click()
-      cy.get('#title').type('Note created by cypress')
-      cy.get('#author').type('Minä')
-      cy.get('#url').type('testingWithCypress.com')
-      cy.contains('Create').click()
+      cy.createBlog({ title: 'Note created by cypress', author: 'Minä', url: 'testingWithCypress.com' })
       cy.contains('Note created by cypress')
       cy.get('#showMore-button').click()
       cy.get('#like-button').click()
+      cy.wait(3500)
       cy.get('html').should('contain', 1)
     })
   })
 
   describe('Remove a blog', function () {
     it('blog can be removed', function () {
-      cy.contains('Add new blog').click()
-      cy.get('#title').type('Note created by cypress')
-      cy.get('#author').type('Minä')
-      cy.get('#url').type('testingWithCypress.com')
-      cy.contains('Create').click()
+      cy.createBlog({ title: 'Note created by cypress', author: 'Minä', url: 'testingWithCypress.com' })
       cy.contains('Note created by cypress')
       cy.get('#showMore-button').click()
       cy.get('#remove-button').click()
@@ -81,26 +55,18 @@ describe('When logged in', function () {
 
   describe('Blogs are sorted by likes when more than one blog', function () {
     it('Blogs are sorted', function () {
-      cy.contains('Add new blog').click()
-      cy.get('#title').type('Note created by cypress')
-      cy.get('#author').type('Minä')
-      cy.get('#url').type('testingWithCypress.com')
-      cy.contains('Create').click()
-      cy.contains('Note created by cypress')
+      cy.createBlog({ title: 'Note created by cypress', author: 'MeMyself', url: 'testingWithCypress.com' })
+      cy.createBlog({ title: 'Another note created by cypress', author: 'Minä taas', url: 'testingWithCypress.com' })
+      cy.wait(3500)
+      cy.get('.blog').then(blogs => {
+        cy.wrap(blogs[0]).contains('Show more').click()
+        cy.wrap(blogs[0]).contains('Like').click()
+        cy.wrap(blogs[1]).contains('Show more').click()
+        cy.wrap(blogs[1]).contains('Like').click()
+        cy.wrap(blogs[1]).contains('Like').click()
+      })
+      cy.get('.blog:first').should('contain', 'Minä taas')
 
-      cy.contains('Add new blog').click()
-      cy.get('#title').type('Another note created by cypress')
-      cy.get('#author').type('Minä taas')
-      cy.get('#url').type('testingWithCypress.com')
-      cy.contains('Create').click()
-      cy.contains('Another note created by cypress')
-
-      cy.get('#showMore-button').click()
-      cy.get('#like-button').click()
-      cy.get('html').should('contain', 1)
-      cy.get('#showMore-button').click()
-      cy.get('#like-button').click()
-      cy.get('.blog:first').should('contain', 2)
     })
   })
 })
